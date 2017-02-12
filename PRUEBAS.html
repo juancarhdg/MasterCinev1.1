@@ -1,0 +1,139 @@
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="css/registro.css">
+        <link href='./images/favicon.ico' rel='icon' type='image/x-icon'/>
+        <script src="js/jquery.min.js"></script>
+        <script src="Scripts/jquery-1.11.0.js"></script>
+        <script src="js/responsiveslides.js"></script>
+        <script src="./Scripts/index.js"></script>
+        <script src="./lib/jquery.raty.js"></script>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script type="text/javascript">
+            var bandera = true
+            function comprobarRegistrar() {
+
+                var nombre = document.forms.nuevo['nombre'].value
+                var primerApellido = document.forms.nuevo['primerApellido'].value
+                var segundoApellido = document.forms.nuevo['segundoApellido'].value
+                var email = document.forms.nuevo['email'].value
+                var confirmarEmail = document.forms.nuevo['confirmarEmail'].value
+                var password = document.forms.nuevo['password'].value
+                var confirmarPassword = document.forms.nuevo['confirmarPassword'].value
+                var req;
+                var datos = [nombre, primerApellido, segundoApellido, email, password]
+                document.formularioRegistro.errorPassword.type = "hidden"
+
+                validarEmails(email, confirmarEmail)
+
+
+                if ((password != confirmarPassword) || (password == "" && confirmarPassword == "")) {
+                    bandera = false
+                    document.formularioRegistro.errorPassword.type = "text"
+                    document.formularioRegistro.errorPassword.value = "Las password no coinciden"
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "registro.php",
+                    async: true,
+                    data: "datos=" + datos,
+                    dataType: "json",
+                    success: function(respuesta) {
+                        update(datos);
+                        updatePeliculas(datos);
+                    },
+                    error: function(xhr, status) {
+                        console.log(status);
+                    }
+                });
+
+
+            }
+
+            function init() {
+                document.getElementById("registrar").onclick = comprobarRegistrar
+                document.getElementById("seguridad").onchange = seguridadPass
+            }
+
+            function validarEmails(email, confirmarEmail) {
+                var expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
+                if (!expr.test(email)) {
+                    bandera = false
+                    document.formularioRegistro.email.value = "El email introducido no es correcto"
+                    if (email == confirmarEmail) {
+                        document.formularioRegistro.confirmarEmail.value = "El email introducido no es correcto"
+                    }
+                    else {
+                        document.formularioRegistro.confirmarEmail.value = "El email no coincide"
+                    }
+                }
+                if (email != confirmarEmail) {
+                    document.formularioRegistro.confirmarEmail.value = "El email no coincide"
+                    bandera = false
+                }
+            }
+        </script>
+
+    <body>
+        <div class="cabecera">
+        </div>
+        <div class="separador">
+
+            <div id="divInicio">
+                <center><img src="./img/logotipo.png" widht="25" height="25"></center>
+            </div>
+        </div>	
+        <!--Formulario de registro de los usuarios en la aplicacion de "Master Cine´s"-->
+        <form id="nuevo" name="formularioRegistro">
+            <div class="item">
+                <label>Nombre:</label>
+                <input type="text" name="nombre" size="30" id="info">
+            </div>
+            <div class="item">
+                <label>Primer Apellido:</label>
+                <input type="text" name="primerApellido" size="30">
+            </div>
+            <div class="item">
+                <label>Segundo Apellido:</label>
+                <input type="text" name="segundoApellido" size="30">
+            </div>
+            <div class="item">
+                <label>Email:</label>
+                <input type="text" name="email" size="30">
+            </div>
+            <div class="item">
+                <label>Confirmar Email:</label>
+                <input type="text" name="confirmarEmail" size="30">
+            </div>
+            <div class="item">
+                <label>Password:</label>
+                <input type="password" name="password" size="30" >
+            </div>
+            <div class="item">
+                <label>Confirmar Password:</label>
+                <input type="password" name="confirmarPassword" size="30">
+                <input type="hidden" name="errorPassword" size="30">
+            </div>
+            <div class="item">
+                <input type="button" name="" id="registrar" value="Registrarme">
+            </div>
+        </form>
+        <div class="pie">
+            aaaaaaaa
+        </div>	
+        <script>
+            init()
+        </script>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </body>
+</html>

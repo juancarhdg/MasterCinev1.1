@@ -1,0 +1,70 @@
+table {
+	border-style:solid;
+	border-color:#ED145B
+}
+table th {
+	height:10px;
+}
+table td , .sinopsis{
+	text-align:center;
+	padding:5px;
+}
+table img {
+	width:150px;
+	height:175px;
+}
+fieldset{
+	width:400px;
+}
+.sinopsis{
+	max-width:600px;
+	overflow: scroll;
+}
+.editarForm{
+	padding:5px;
+}
+#usuarios, #peliculas , .editarForm{
+	background: #999999 url("../images/pattern29.png");color: #ffffff;font: 14px/25px Arial, Helvetica, sans-serif;
+}
+#buttonSubir{
+
+}
+body {
+	background-color:black;
+}
+
+#tablaPeliculas {
+	margin-top:20px;
+}
+legend{
+	color: #ED145B;
+}
+.tituloEdPelicula{
+	color: #ED145B;
+}
+.item {
+	height:40px;
+}
+.item input, select{
+	float:right;
+	margin-right:50px;
+}
+select {
+	margin-right:50px;
+	width:30px;
+}
+textarea{
+	width:350px;
+	height:90px;
+}
+.itemTextArea {
+	min-height:125px;
+}
+.itemTextArea textarea {
+	float:right;
+	margin-right:50px;
+}
+#formm{
+	display:inline;
+
+}

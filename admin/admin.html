@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="us">
+    <head>
+        <meta charset="utf-8">
+        <title>Administracion</title>
+        <link href="../css/ui-darkness/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+        <script src="../Scripts/jquery-1.11.0.js"></script>
+        <script src="../js/jquery-ui-1.10.4.custom.js"></script>
+        <link rel="stylesheet" href="../css/zerogrid.css">
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/responsive.css">
+        <link rel="stylesheet" href="../css/responsiveslides.css" />
+        <link rel="stylesheet" type="text/css" href="../css/admin.css">
+
+        <script src="../Scripts/admin.js"></script>
+        <script>
+            $(function() {
+                $("#tabs").tabs();
+            });
+        </script>
+    </head>
+
+    <body>
+        <header>
+            <div class="wrap-header zerogrid">
+                <div id="logo"><img src="../img/logotipo.png"/></div>
+            </div>
+        </header>
+        <section id="content">
+            <div class="wrap-content zerogrid">
+                <div class="menu">
+                    <ul id="menuNavegacion1">
+                        <li class="current"><a href="../index.html">Inicio</a></li>
+                    </ul>
+                </div>
+                <div id="tabs">
+                    <ul>
+                        <li><a href="#peliculas">Peliculas</a></li>
+                        <li><a href="#usuarios">Usuarios</a></li>
+                        <li><a href="#otros">Salas</a></li>
+
+
+                    </ul>
+                    <!--Pestaña usuario-->
+                    <div id="usuarios">
+                        <p>Editar usuarios</p>
+                        <table id="tablaUsuarios">
+                            <th>Nick</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Compras</th>
+                            <th>Rol</th>
+                            <th>Editar</th>
+                        </table>
+
+                        <!--<p>Usuarios más activos</p>
+                        <table id="UsuariosActivos">
+                                <th>Nick</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Rol</th>
+                                <th>Compras</th>
+                        </table>		
+                        -->
+                    </div>
+
+                    <!--Pestaña peliculas  -->
+                    <div id="peliculas">
+
+                        <form action="subirPelicula.php" method="POST">
+                            <fieldset>
+                                <legend>Agregar pelicula</legend>
+
+                                <div class="item">
+                                    Nombre<input type="text" name="nombre" id="nombre">
+                                </div>
+
+                                <div class="item">
+                                    Año<input type="text" name="anno" id="anno">
+                                </div>
+
+                                <div class="item">
+                                    Sala<select name="sala">
+                                        <option value="1" >1</option>
+                                        <option value="2" >2</option>
+                                        <option value="3" >3</option>
+                                        <option value="4" >4</option>
+                                        <option value="5" >5</option>
+                                        <option value="6" >6</option>
+                                        <option value="0" >0</option>
+                                    </select>
+                                </div>
+
+                                <div class="itemTextArea">
+                                    Sinopsis<textarea name="sinopsis"></textarea>
+                                </div>
+
+                                <div class="item">
+                                    Ruta de la imagen<input type="TEXT" name="ruta">
+                                </div>
+
+                                <button id="buttonSubir" class="boton">Subir</button>
+                            </fieldset>
+                        </form>
+
+                        <div id="tablaPeliculas">
+                            <table>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Puntuacion</th>
+                                <th>Cartel</th>
+                                <th>Año</th>
+                                <th>Sinopsis</th>
+                                <th>Editar</th>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="otros">
+                        <table>
+                            <tr><td>Reestablecer butacas</td><td><button class="boton" id="reestablece">Reestablecer</button></td></tr>
+                            <tr><td>Total ganancias</td><td><span id="total"></span></td></tr>
+                            <tr><td>Cambiar precio entrada</td><td><input type="text" ID="CambiarPrecio"  name="precio"></td></tr>
+                        </table>
+                        <br>
+                        <div id="tablaSala">
+                            <table style="padding:10px;">
+                                <th style="width:160px;padding:2px;">Número de sala</th>
+                                <th style="width:160px;padding:2px;">Butacas disponibles</th>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="wrap-footer zerogrid">
+                <div class="row copyright">
+                    <p>Copyright © 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </body>
+</html>

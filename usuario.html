@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <title>Master´s Cine</title>
+
+        <link rel="stylesheet" href="css/zerogrid.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/responsive.css">
+        <link rel="stylesheet" href="css/responsiveslides.css" />
+
+
+        <link href='./images/favicon.ico' rel='icon' type='image/x-icon'/>
+        <script src="js/jquery.min.js"></script>
+        <script src="Scripts/jquery-1.11.0.js"></script>
+        <script src="js/responsiveslides.js"></script>
+        <script src="./Scripts/index.js"></script>
+        <script src="./lib/jquery.raty.js"></script>
+        <script>
+            $(document).ready(function() {
+                //En esta llamada comprobamos si el usuario se a logueado ya.
+                //Si lo está mostraremos en el menú de navegación el enlace a la página de usuario
+                $.ajax({
+                    type: "POST",
+                    url: "comprobar_logueado.php",
+                    async: true,
+                    success: function(logueado) {
+                        $("#cerrar_sesion").hide();
+
+                        if (logueado == 1) {
+                            //Agregamos el enlace a la página de usuario
+                            $("#menuNavegacion1").append(" <li><a href='usuario.html' id='usuarioLink'>Usuario</a></li>");
+                            $("#loginLink").hide(); //Oculta el enlace de login
+                            $("#cerrar_sesion").show();
+                        }
+                        else if (logueado == 2) {
+                            //Agregamos el enlace a la página de administrador
+                            $("#menuNavegacion1").append(" <li><a href='admin/admin.html' id='usuarioLink'>Admin</a></li>");
+                            $("#loginLink").hide(); //Oculta el enlace de login
+                            $("#cerrar_sesion").show();
+                        }
+                    },
+                    error: function(xhr, status) {
+                        console.log(status);
+                    }
+                });
+
+            });
+        </script>
+    </head>
+    <body>
+        <!--------------Header--------------->
+        <header>
+            <div class="wrap-header zerogrid">
+                <div id="logo"><img src="./img/logotipo.png"/></div>
+            </div>
+        </header>
+
+        <nav>
+            <div class="wrap-nav zerogrid">
+                <div class="menu">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="peliculas.html">Peliculas</a></li>
+                        <li><a id="cerrar_sesion" href="#" style="display: block;">Cerrar Sesion</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+        <!--------------Content--------------->
+        <section id="content">
+            <div class="wrap-content zerogrid">
+                <div class="row block03">
+                    <div class="col-2-3">
+
+                        <!-- FORMULARIO PARA ELEGIR OPCIONES DE USUARIO -->
+                        <div class="heading"><h2>Opciones</h2></div>
+                        <div class="wrap-col">
+                            <form class="formularioOpciones">
+                                <input type="radio" name="opciones" value="puntos" class="opciones"> Consultar Datos Personales y Puntos<br/>
+                                <input type="radio" name="opciones" value="cambiarContrasena" class="opciones"> Cambiar Contraseña<br/>
+                                <input type="radio" name="opciones" value="darseBaja" class="opciones"> Darse de Baja<br/>
+                                <br/>
+                                <br/>
+                                <input type="button" id="seleccionar_usu" class="boton" name="seleccionar" value="Seleccionar">
+                            </form>
+                            <br/>
+                        </div>
+                        <!-- //FORMULARIO PARA ELEGIR OPCIONES DE USUARIO -->
+
+                        <!-- Espacio donde se mostrar la información del usuario -->
+                        <div class="wrap-col" id="infoUsuario"></div>
+
+                        <!-- FORMULARIO PARA BAJA DE USUARIO -->
+                        <div id="form_baja" class="form_usu">
+                            <h1>Formulario de Baja</h1>
+                            <hr/>
+                            <h3></h3>
+                            <form>
+                                <p>Introduzca su nombre de usuario para confirmar la baja</p>
+                                <label for="nombre_usu">Nick del Usuario</label>
+                                <input type="text" id="nombre_usu" name="nombre_usu" class="opciones"><br/>
+                                <input type="button" id="boton_baja" class="boton" name="baja" value="Darse de baja">
+                            </form>
+                        </div>
+                        <!-- //FORMULARIO PARA BAJA DE USUARIO -->
+
+                        <!-- FORMULARIO PARA CAMBIAR CONTRASEÑA DE USUARIO -->
+                        <div id="form_cambio_contrasena" class="form_usu">
+                            <h1>Formulario de Cambio de Contraseña</h1>
+                            <hr/>
+                            <h3></h3>
+                            <form>
+                                <label for="nueva_password">Introduzca su nueva contraseña</label>
+                                <input type="password" id="nueva_password" name="nueva_password" class="opciones"><br/>
+                                <label for="nueva_password">Repita su nueva contraseña</label>
+                                <input type="password" id="re_nueva_password" name="re_nueva_password" class="opciones"><br/>
+                                <input type="button" id="boton_nueva_password" class="boton" name="new_password" value="Cambiar Contraseña">
+                            </form>
+                        </div>
+                        <!-- //FORMULARIO PARA CAMBIAR CONTRASEÑA DE USUARIO -->
+
+                        <!-- //FORMULARIO PARA VER LOS DATOS DE USUARIO -->
+                        <div id="form_puntos" class="form_usu">
+                            <h1>Datos del usuario</h1>
+                            <hr/>
+                            <h3></h3>
+                            <p></p>
+                        </div>
+                        <!-- //FORMULARIO PARA VER LOS DATOS DE USUARIO -->
+
+                    </div>
+                    <div class="col-1-3">
+                        <div class="wrap-col">
+                            <div class="box">
+                                <div class="heading"><h2>Ofertas</h2></div>
+                                <div class="content">
+                                    <img src="img/oferta.jpg" style="width: 100%"/>
+                                    <br/><br/>
+                                    <img src="img/2x1.jpg" style="width: 100%"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--------------Footer--------------->
+        <footer>
+            <div class="wrap-footer zerogrid">
+                <div class="row block09">
+
+                    <div class="col-1-4">
+                        <div class="wrap-col">
+                            <div class="box">
+                                <div class="heading"><h2>Contáctenos</h2></div>
+                                <div class="content">
+                                    <ul>
+                                        <li>Direccion : Avd. Manoteras 210 Madrid (España)</li>
+                                        <li>Tléfono : 91000111222</li>
+                                        <li>Email : contacto@mastercine.com</li>
+                                        <li>Website : www.mastercine.com</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row copyright">
+                    <p>Copyright © 2014 - <a href="index.html" target="_blank">Master´s Cines</a> by Daniel Morillas, Juan Carlos Hidalgo, Alejandro Jimenez</p>
+                </div>
+            </div>
+        </footer>
+
+    </body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Master´s Cine</title>
+
+        <!-- Mobile Specific Metas
+      ================================================== -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <!-- CSS
+      ================================================== -->
+        <link rel="stylesheet" href="css/zerogrid.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/responsive.css">
+        <link rel="stylesheet" href="css/responsiveslides.css" />
+
+
+        <link href='./images/favicon.ico' rel='icon' type='image/x-icon'/>
+        <script src="js/jquery.min.js"></script>
+        <script src="Scripts/jquery-1.11.0.js"></script>
+        <script src="js/responsiveslides.js"></script>
+        <script src="./Scripts/index.js"></script>
+        <script src="./lib/jquery.raty.js"></script>
+
+        <script>
+            $(document).ready(function() {
+
+                //En esta llamada comprobamos si el usuario se a logueado ya.
+                //Si lo está mostraremos en el menú de navegación el enlace a la página de usuario
+                $.ajax({
+                    type: "POST",
+                    url: "comprobar_logueado.php",
+                    async: true,
+                    success: function(logueado) {
+                        $("#cerrar_sesion").hide();
+                        $("#loguearse2").show();
+                        $("#boton_comprar").hide();
+                        if (logueado == 1) {
+                            //Agregamos el enlace a la página de usuario
+                            $("#menuNavegacion6").append(" <li><a href='usuario.html' id='usuarioLink'>Usuario</a></li>");
+                            $("#loginLink3").hide(); //Oculta el enlace de login
+                            $("#cerrar_sesion").show(); //Muestra el enlace de cerrar sesion
+                            $("#subirComentario").show(); //Muestra el formulario de nueva review.
+                            $("#loguearse2").hide();
+                            $("#boton_comprar").show();
+                        }
+                        else if (logueado == 2) {
+                            //Agregamos el enlace a la página de administrador
+                            $("#menuNavegacion6").append(" <li><a href='admin/admin.html' id='usuarioLink'>Admin</a></li>");
+                            $("#loginLink3").hide(); //Oculta el enlace de login
+                            $("#cerrar_sesion").show();
+                            $("#loguearse2").hide();
+                            $("#boton_comprar").show();
+                        }
+                    },
+                    error: function(xhr, status) {
+                        console.log(status);
+                    }
+                });
+
+                //Cuando pinche en el botón de identificate para comprar entradas aparecerá el formulario de login
+                $("#loguearse2").click(function() {
+                    $("#desplegableForm").show();
+                    $(location).attr('href', "#desplegableForm");
+                });
+
+                //Esta funcion carga los datos de la pelicula que hemos seleccionado en la página peliculas.html
+                function cargarDatos() {
+                    var datosMostrar = JSON.parse(localStorage.getItem('datosPeli')) //Recuperamos de la memoria los datos
+
+                    $("#imagenPeliUnica").attr("src", datosMostrar[0]); //Cambia los valores de distintos campos para mostar los datos recuperados de la memoria
+                    $("#tituloPeliUnica").text(datosMostrar[1]);
+                    $("#anno").text(datosMostrar[3]);
+                    $("#sinopsis").text(datosMostrar[2]);
+                }
+
+
+                //Función que carga los comentarios guardados en la bbdd
+                function cargarComentarios() {
+                    var datosMostraer = JSON.parse(localStorage.getItem('datosPeli')) //Recuperamos de la memoria los datos
+                    var id = datosMostraer[5];
+                    var cnt = 0;
+                    $("#idPeli").attr("value", id);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "cargar_comentarios.php",
+                        async: true,
+                        dataType: "json",
+                        data: "id=" + id,
+                        success: function(datos) {
+                            //	alert(id);
+                            for (var i = 0; i < datos.length; i++) {
+                                $("#comentarios").append(
+                                        "<article id='infoPeli'>"
+                                        + "<h4 id='tituloPeliUnica'>Escrito por " + datos[i].nick + " - " + datos[i].fecha + "</h4> <br/>"
+                                        + "<div class='info' id='anno'></div>"
+                                        + "<p id='sinopsis'>" + datos[i].texto + "</p>"
+                                        + "</article>"
+                                        )
+                                cnt++;
+                            }
+                            $("#nCom").text(cnt + " comentarios");
+                        }
+                    });
+                }
+                ;
+                cargarDatos();
+                cargarComentarios();
+            });
+        </script>
+
+    </head>
+    <body>
+        <!--------------Header--------------->
+        <header>
+            <div class="wrap-header zerogrid">
+                <div id="logo"><img src="./img/logotipo.png"/></div>
+            </div>
+        </header>
+
+        <nav>
+            <div class="wrap-nav zerogrid">
+                <div class="menu">
+                    <ul id="menuNavegacion6">
+                        <li class="current"><a href="index.html">Home</a></li>
+                        <li><a href="registro.html">Registro</a></li>
+                        <li><a href="#" id="loginLink3">Login</a></li>
+                        <li><a href="peliculas.html">Peliculas</a></li>
+                        <li><a id="cerrar_sesion" href="#" style="display: block;">Cerrar Sesion</a></li>
+                    </ul>
+                </div>
+                <div id="desplegableForm">
+                    <form id="formularioLogin" method="post" action="login.php">
+                        <input type="text" value="Nombre" name="nombre " id="nombre">
+                        <input type="password" value="****" name="pass" id="pass">
+                        <input type="button" id="loguearse" value="Log in">
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <!--------------Content--------------->
+        <section id="content">
+            <div class="wrap-content zerogrid">
+                <div class="row block03">
+                    <div class="col-2-3">
+                        <div class="wrap-col">
+                            <article id="infoPeli">
+                                <img id="imagenPeliUnica" src=""/>
+                                <h2 id="tituloPeliUnica"></h2>
+                                <div class="info" id="anno"></div>
+                                <a href="#comentarios" id="nCom"></a>
+                                <p id="sinopsis"></p>
+                            </article>
+                            <input type="button" id="boton_comprar" class="boton" name="baja" value="Comprar Entrada">
+                            <input type="button" id="loguearse2" class="boton" value="identificate para compra entradas">
+                        </div>
+                        <br/>
+                        <br/>
+
+                        <div class="wrap-col" id="subirComentario">
+                            <div class="heading">
+                                <h2>Comentarios</h2>
+                            </div>
+                            <fieldset>
+                                <legend>Escriba su review</legend>
+                                <form method='POST' action='subirComentario.php'>	
+                                    <textarea id="texto" name="texto"></textarea>
+                                    <br/>
+                                    <label for="puntuacion">Puntuacion </label>
+                                    <input type="number" max=5 min=1 name="puntuacion">
+                                    <input type="hidden" name="id" id="idPeli" value="0">
+                                    <br/>
+                                    <br/>
+                                    <input type="submit" id="subComentario" class="boton" name="Subir" value="Subir">
+                                </form>
+                            </fieldset>
+
+                        </div>			
+                        <div class="wrap-col" id="comentarios">
+
+                        </div>
+
+                    </div>
+                    <div class="col-1-3">
+                        <div class="wrap-col">
+                            <div class="box">
+                                <div class="heading"><h2>Ofertas</h2></div>
+                                <div class="content">
+                                    <img src="img/oferta.jpg" style="width: 100%"/>
+                                    <br/><br/>
+                                    <img src="img/2x1.jpg" style="width: 100%"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--------------Footer--------------->
+        <footer>
+            <div class="wrap-footer zerogrid">
+                <div class="row block09">
+                    <div class="col-1-4">
+                        <div class="wrap-col">
+                            <div class="box">
+                                <div class="heading"><h2>Contact Us</h2></div>
+                                <div class="content">
+                                    <ul>
+                                        <li>Direccion : Avd. Manoteras 210 Madrid (España)</li>
+                                        <li>Teléfono : 91000111222</li>
+                                        <li>Email : contacto@mastercine.com</li>
+                                        <li>Website : www.mastercine.com</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row copyright">
+                    <p>Copyright © 2014 - <a href="index.html" target="_blank">Master´s Cines</a> by Daniel Morillas, Juan Carlos Hidalgo, Alejandro Jimenez</p>
+                </div>
+            </div>
+        </footer>
+
+    </body></html>
